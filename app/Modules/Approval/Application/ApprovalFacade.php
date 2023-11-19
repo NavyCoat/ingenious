@@ -19,20 +19,22 @@ final readonly class ApprovalFacade implements ApprovalFacadeInterface
     ) {
     }
 
-    public function approve(ApprovalDto $dto): true
+    public function approve(ApprovalDto $entity): void
     {
-        $this->validate($dto);
-        $this->dispatcher->dispatch(new EntityApproved($dto));
-
-        return true;
+        try {
+            $this->validate($entity);
+            $this->dispatcher->dispatch(new EntityApproved($entity));
+        } catch (\Throwable $e) {
+        }
     }
 
-    public function reject(ApprovalDto $dto): true
+    public function reject(ApprovalDto $entity): void
     {
-        $this->validate($dto);
-        $this->dispatcher->dispatch(new EntityRejected($dto));
-
-        return true;
+        try {
+            $this->validate($entity);
+            $this->dispatcher->dispatch(new EntityRejected($entity));
+        } catch (\Throwable $e) {
+        }
     }
 
     private function validate(ApprovalDto $dto): void
